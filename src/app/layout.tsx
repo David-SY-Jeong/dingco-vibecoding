@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "바이브코딩 - 딩코딩코의 프로그래밍 강의",
   description: "딩코딩코의 바이브코딩으로 프로그래밍을 즐겁게 배워보세요! 실무 중심의 강의와 재미있는 코딩 문화를 경험하세요.",
+  verification: {
+    google: "6z_LOU_hB8VEpFlwT2ALJwHz0D2Ojwt0-FjBAx9QLrA",
+  },
   other: {
     "google-adsense-account": "ca-pub-5263058944375875",
   },
