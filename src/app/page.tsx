@@ -237,7 +237,7 @@ export default function Home() {
                   ))}
                 </div>
                 <p className="text-slate-600 dark:text-slate-300 italic">
-                  "바이브코딩 덕분에 프로그래밍이 이렇게 재미있는 줄 몰랐어요. 실무에서 바로 써먹을 수 있는 내용들로 가득해서 정말 만족합니다!"
+                  &ldquo;바이브코딩 덕분에 프로그래밍이 이렇게 재미있는 줄 몰랐어요. 실무에서 바로 써먹을 수 있는 내용들로 가득해서 정말 만족합니다!&rdquo;
                 </p>
               </div>
               <div className="flex items-center">
@@ -261,7 +261,7 @@ export default function Home() {
                   ))}
                 </div>
                 <p className="text-slate-600 dark:text-slate-300 italic">
-                  "개인 맞춤 피드백이 정말 좋았어요. 딩코딩코 선생님이 제 코드를 하나하나 봐주시면서 어떻게 개선할 수 있는지 알려주셨어요."
+                  &ldquo;개인 맞춤 피드백이 정말 좋았어요. 딩코딩코 선생님이 제 코드를 하나하나 봐주시면서 어떻게 개선할 수 있는지 알려주셨어요.&rdquo;
                 </p>
               </div>
               <div className="flex items-center">
@@ -285,7 +285,7 @@ export default function Home() {
                   ))}
                 </div>
                 <p className="text-slate-600 dark:text-slate-300 italic">
-                  "백엔드 마스터 코스를 들은 후 실제 회사에서 바로 적용할 수 있었어요. 실무 중심의 커리큘럼이 정말 도움이 됐습니다!"
+                  &ldquo;백엔드 마스터 코스를 들은 후 실제 회사에서 바로 적용할 수 있었어요. 실무 중심의 커리큘럼이 정말 도움이 됐습니다!&rdquo;
                 </p>
               </div>
               <div className="flex items-center">
