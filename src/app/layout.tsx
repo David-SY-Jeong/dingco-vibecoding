@@ -39,15 +39,19 @@ export default function RootLayout({
         {/* Google Analytics */}
         <Script
           async
-          src="https://www.googletagmanager.com/gtag/js?id=G-S5J45DF4L8"
-          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID || 'G-S5J45DF4L8'}`}
+          strategy="beforeInteractive"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script id="google-analytics" strategy="beforeInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-S5J45DF4L8');
+            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID || 'G-S5J45DF4L8'}', {
+              page_title: document.title,
+              page_location: window.location.href,
+              send_page_view: true
+            });
           `}
         </Script>
       </head>

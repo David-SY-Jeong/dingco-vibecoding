@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { trackButtonClick, trackLinkClick, trackUserInteraction } from '@/lib/analytics';
+import { checkGAConnection, checkGAScriptLoaded } from '@/lib/gtag';
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -10,6 +12,39 @@ export default function Home() {
   // 애니메이션을 위한 useEffect
   useEffect(() => {
     setIsVisible(true);
+    
+    // 개발 환경에서 GA 연결 상태 확인
+    if (process.env.NODE_ENV === 'development') {
+      setTimeout(() => {
+        console.log('=== Google Analytics Debug Info ===');
+        checkGAScriptLoaded();
+        checkGAConnection();
+        console.log('================================');
+      }, 2000);
+    }
+  }, []);
+
+  // 스크롤 깊이 추적
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = Math.round((scrollTop / docHeight) * 100);
+      
+      // 25%, 50%, 75%, 100% 지점에서 이벤트 추적
+      if (scrollPercent >= 25 && scrollPercent < 50) {
+        trackUserInteraction('scroll_depth', '25%');
+      } else if (scrollPercent >= 50 && scrollPercent < 75) {
+        trackUserInteraction('scroll_depth', '50%');
+      } else if (scrollPercent >= 75 && scrollPercent < 100) {
+        trackUserInteraction('scroll_depth', '75%');
+      } else if (scrollPercent >= 100) {
+        trackUserInteraction('scroll_depth', '100%');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // 슬라이더 자동 전환
@@ -59,12 +94,33 @@ export default function Home() {
             딩코딩코
           </div>
           <div className="hidden md:flex space-x-8">
-            <a href="#courses" className="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors">강의</a>
-            <a href="#about" className="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors">소개</a>
-            <a href="#contact" className="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors">문의</a>
+            <a 
+              href="#courses" 
+              className="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors"
+              onClick={() => trackLinkClick('강의', '#courses')}
+            >
+              강의
+            </a>
+            <a 
+              href="#about" 
+              className="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors"
+              onClick={() => trackLinkClick('소개', '#about')}
+            >
+              소개
+            </a>
+            <a 
+              href="#contact" 
+              className="text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors"
+              onClick={() => trackLinkClick('문의', '#contact')}
+            >
+              문의
+            </a>
           </div>
           <div className="flex items-center space-x-4">
-            <button className="hidden md:block bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+            <button 
+              className="hidden md:block bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+              onClick={() => trackButtonClick('수강신청', 'header')}
+            >
               수강신청
             </button>
             {/* 모바일 메뉴 버튼 */}
@@ -86,25 +142,40 @@ export default function Home() {
               <a 
                 href="#courses" 
                 className="block text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  trackLinkClick('강의', '#courses');
+                }}
               >
                 강의
               </a>
               <a 
                 href="#about" 
                 className="block text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  trackLinkClick('소개', '#about');
+                }}
               >
                 소개
               </a>
               <a 
                 href="#contact" 
                 className="block text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  trackLinkClick('문의', '#contact');
+                }}
               >
                 문의
               </a>
-              <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300">
+              <button 
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300"
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  trackButtonClick('수강신청', 'mobile-menu');
+                }}
+              >
                 수강신청
               </button>
             </div>
@@ -152,10 +223,16 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+            <button 
+              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              onClick={() => trackButtonClick('무료 체험 시작하기', 'hero')}
+            >
               무료 체험 시작하기
             </button>
-            <button className="border-2 border-blue-600 text-blue-600 dark:text-blue-400 px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-50 dark:hover:bg-slate-800 transition-all duration-300">
+            <button 
+              className="border-2 border-blue-600 text-blue-600 dark:text-blue-400 px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-50 dark:hover:bg-slate-800 transition-all duration-300"
+              onClick={() => trackButtonClick('강의 미리보기', 'hero')}
+            >
               강의 미리보기
             </button>
           </div>
@@ -187,7 +264,10 @@ export default function Home() {
                     <span className="font-semibold">{course.duration}</span>
                   </div>
                 </div>
-                <button className="w-full bg-white/20 backdrop-blur-sm text-white py-3 rounded-xl font-semibold hover:bg-white/30 transition-all">
+                <button 
+                  className="w-full bg-white/20 backdrop-blur-sm text-white py-3 rounded-xl font-semibold hover:bg-white/30 transition-all"
+                  onClick={() => trackButtonClick('자세히 보기', `course-${course.title}`)}
+                >
                   자세히 보기
                 </button>
               </div>
