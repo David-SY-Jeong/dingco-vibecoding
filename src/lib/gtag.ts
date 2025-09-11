@@ -3,11 +3,18 @@
 // GA4 추적 ID
 const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-S5J45DF4L8';
 
+// GA 이벤트 데이터 타입 정의
+type GAEventData = {
+  command: string;
+  targetId: string;
+  config?: Record<string, string | number | boolean>;
+};
+
 // gtag 함수 타입 정의
 declare global {
   interface Window {
     gtag: (command: string, targetId: string, config?: Record<string, string | number | boolean>) => void;
-    dataLayer: Array<Record<string, string | number | boolean | Record<string, string | number | boolean>>>;
+    dataLayer: GAEventData[];
   }
 }
 
@@ -16,7 +23,7 @@ export const initGtag = () => {
   if (typeof window !== 'undefined') {
     window.dataLayer = window.dataLayer || [];
     window.gtag = function(command: string, targetId: string, config?: Record<string, string | number | boolean>) {
-      const eventData: Record<string, string | number | boolean | Record<string, string | number | boolean>> = { 
+      const eventData: GAEventData = { 
         command, 
         targetId 
       };

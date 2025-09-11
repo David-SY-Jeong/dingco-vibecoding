@@ -3,8 +3,11 @@
 // GA4 추적 ID (환경 변수에서 가져오거나 기본값 사용)
 const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-S5J45DF4L8';
 
+// 이벤트 매개변수 타입 정의
+type EventParameters = Record<string, string | number | boolean>;
+
 // GA4 이벤트 추적 함수
-export const trackEvent = (eventName: string, parameters?: Record<string, string | number | boolean>) => {
+export const trackEvent = (eventName: string, parameters?: EventParameters) => {
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', eventName, {
       event_category: 'engagement',
@@ -65,6 +68,6 @@ export const trackUserInteraction = (interactionType: string, details?: string) 
 // 전역 gtag 타입 선언
 declare global {
   interface Window {
-    gtag: (command: string, targetId: string, config?: Record<string, string | number | boolean>) => void;
+    gtag: (command: string, targetId: string, config?: EventParameters) => void;
   }
 }
