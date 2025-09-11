@@ -6,8 +6,8 @@ const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-S5J45DF4L8';
 // gtag 함수 타입 정의
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void;
-    dataLayer: any[];
+    gtag: (command: string, targetId: string, config?: Record<string, string | number | boolean>) => void;
+    dataLayer: Array<Record<string, string | number | boolean | Record<string, string | number | boolean>>>;
   }
 }
 
@@ -15,8 +15,15 @@ declare global {
 export const initGtag = () => {
   if (typeof window !== 'undefined') {
     window.dataLayer = window.dataLayer || [];
-    window.gtag = function() {
-      window.dataLayer.push(arguments);
+    window.gtag = function(command: string, targetId: string, config?: Record<string, string | number | boolean>) {
+      const eventData: Record<string, string | number | boolean | Record<string, string | number | boolean>> = { 
+        command, 
+        targetId 
+      };
+      if (config) {
+        eventData.config = config;
+      }
+      window.dataLayer.push(eventData);
     };
     
     // 디버그 모드에서 콘솔 로그 출력
@@ -42,7 +49,7 @@ export const trackPageView = (url: string, title?: string) => {
 };
 
 // 이벤트 추적
-export const trackEvent = (eventName: string, parameters?: Record<string, any>) => {
+export const trackEvent = (eventName: string, parameters?: Record<string, string | number | boolean>) => {
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', eventName, parameters);
     

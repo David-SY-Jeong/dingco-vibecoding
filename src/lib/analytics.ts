@@ -4,7 +4,7 @@
 const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-S5J45DF4L8';
 
 // GA4 이벤트 추적 함수
-export const trackEvent = (eventName: string, parameters?: Record<string, any>) => {
+export const trackEvent = (eventName: string, parameters?: Record<string, string | number | boolean>) => {
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', eventName, {
       event_category: 'engagement',
@@ -58,13 +58,13 @@ export const trackScrollDepth = (depth: number) => {
 export const trackUserInteraction = (interactionType: string, details?: string) => {
   trackEvent('user_interaction', {
     interaction_type: interactionType,
-    interaction_details: details
+    interaction_details: details || 'unknown'
   });
 };
 
 // 전역 gtag 타입 선언
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void;
+    gtag: (command: string, targetId: string, config?: Record<string, string | number | boolean>) => void;
   }
 }
