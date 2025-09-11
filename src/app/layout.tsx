@@ -35,10 +35,7 @@ export default function RootLayout({
       <head>
         {/* Google Search Console Verification */}
         <meta name="google-site-verification" content="6z_LOU_hB8VEpFlwT2ALJwHz0D2Ojwt0-FjBAx9QLrA" />
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+        
         {/* Google Analytics */}
         <Script
           async
@@ -53,6 +50,10 @@ export default function RootLayout({
             gtag('config', 'G-S5J45DF4L8');
           `}
         </Script>
+      </head>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         
         {/* Google AdSense */}
         <Script
