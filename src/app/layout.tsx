@@ -21,6 +21,7 @@ export const metadata: Metadata = {
   },
   other: {
     "google-adsense-account": "ca-pub-5263058944375875",
+    "google-site-verification": "6z_LOU_hB8VEpFlwT2ALJwHz0D2Ojwt0-FjBAx9QLrA",
   },
 };
 
@@ -31,6 +32,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        {/* Google Search Console Verification */}
+        <meta name="google-site-verification" content="6z_LOU_hB8VEpFlwT2ALJwHz0D2Ojwt0-FjBAx9QLrA" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
