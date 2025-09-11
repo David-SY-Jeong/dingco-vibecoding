@@ -7,14 +7,13 @@ const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-S5J45DF4L8';
 type GAEventData = {
   command: string;
   targetId: string;
-  config?: Record<string, string | number | boolean>;
+  config?: Record<string, string | number | boolean | undefined>;
 };
 
 // gtag 함수 타입 정의
 declare global {
   interface Window {
-    gtag: (command: string, targetId: string, config?: Record<string, string | number | boolean>) => void;
-    dataLayer: GAEventData[];
+    gtag: (command: string, targetId: string, config?: Record<string, string | number | boolean | undefined>) => void;
   }
 }
 
@@ -22,7 +21,7 @@ declare global {
 export const initGtag = () => {
   if (typeof window !== 'undefined') {
     window.dataLayer = window.dataLayer || [];
-    window.gtag = function(command: string, targetId: string, config?: Record<string, string | number | boolean>) {
+    window.gtag = function(command: string, targetId: string, config?: Record<string, string | number | boolean | undefined>) {
       const eventData: GAEventData = { 
         command, 
         targetId 
@@ -30,7 +29,7 @@ export const initGtag = () => {
       if (config) {
         eventData.config = config;
       }
-      window.dataLayer.push(eventData);
+      (window.dataLayer as GAEventData[]).push(eventData);
     };
     
     // 디버그 모드에서 콘솔 로그 출력
@@ -56,7 +55,7 @@ export const trackPageView = (url: string, title?: string) => {
 };
 
 // 이벤트 추적
-export const trackEvent = (eventName: string, parameters?: Record<string, string | number | boolean>) => {
+export const trackEvent = (eventName: string, parameters?: Record<string, string | number | boolean | undefined>) => {
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', eventName, parameters);
     
@@ -75,7 +74,7 @@ export const checkGAConnection = () => {
     console.log('GA Connection Status:', {
       hasGtag,
       hasDataLayer,
-      dataLayerLength: window.dataLayer?.length || 0
+      dataLayerLength: (window.dataLayer as unknown[])?.length || 0
     });
     
     return hasGtag && hasDataLayer;

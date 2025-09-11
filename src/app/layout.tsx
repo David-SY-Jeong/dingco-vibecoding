@@ -21,7 +21,6 @@ export const metadata: Metadata = {
   },
   other: {
     "google-adsense-account": "ca-pub-5263058944375875",
-    "google-site-verification": "6z_LOU_hB8VEpFlwT2ALJwHz0D2Ojwt0-FjBAx9QLrA",
   },
 };
 
@@ -32,32 +31,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <head>
-        {/* Google Search Console Verification */}
-        <meta name="google-site-verification" content="6z_LOU_hB8VEpFlwT2ALJwHz0D2Ojwt0-FjBAx9QLrA" />
-        
-        {/* Google Analytics */}
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        {/* Google Analytics - beforeInteractive로 최대한 빨리 로드 */}
         <Script
           async
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID || 'G-S5J45DF4L8'}`}
+          src="https://www.googletagmanager.com/gtag/js?id=G-S5J45DF4L8"
           strategy="beforeInteractive"
         />
         <Script id="google-analytics" strategy="beforeInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
+            function gtag(...args){dataLayer.push(args);}
             gtag('js', new Date());
-            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID || 'G-S5J45DF4L8'}', {
+            gtag('config', 'G-S5J45DF4L8', {
               page_title: document.title,
               page_location: window.location.href,
               send_page_view: true
             });
           `}
         </Script>
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
         
         {/* Google AdSense */}
         <Script
